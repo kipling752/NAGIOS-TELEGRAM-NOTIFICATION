@@ -11,15 +11,21 @@ Open up your commands.cfg in the nagios\objects\etc directory and paste in the f
 
 
 # 'notify-host-by-telegram' command definition
-define command{
+
+define command 
+
 command_name notify-host-by-telegram
 command_line /usr/bin/curl -X POST --data chat_id=$CONTACTPAGER$ --data parse_mode="markdown" --data text="%60$HOSTNAME$%60 %0A%0A$NOTIFICATIONTYPE$ %0A%60$HOSTSTATE$%60 %0A%60$HOSTADDRESS$%60 %0A%60$HOSTOUTPUT$%60" https://api.telegram.org/bot<BOTAPI-KEY>/sendMessage
+
 }
 
 # 'notify-service-by-telegram' command definition
-define command{
+
+define command {
+
 command_name notify-service-by-telegram
 command_line /usr/bin/curl -X POST --data chat_id=$CONTACTPAGER$ --data parse_mode="markdown" --data text="%60$HOSTNAME$%60 %0A%0A$NOTIFICATIONTYPE$ %0A%60$SERVICEDESC$%60 %0A%60$HOSTADDRESS$%60 %0A%60$SERVICESTATE$%60 %0A%60$SERVICEOUTPUT$%60" https://api.telegram.org/bot<BOTAPI-KEY>/sendMessage
+
 }
 
 
@@ -30,7 +36,8 @@ Safe the file and open the next one – contacts.cfg
 As you might have seen in the code, we are using the pager ID of the contact to send the notification.
 
 
-define contact{
+define contact {
+
 contact_name nagiosadmin ; Short name of user
 use generic-contact ; Inherit default values from generic-contact template (defined above)
 alias Nagios Admin ; Full name of user
@@ -38,6 +45,7 @@ email root@localhost ; <<***** CHANGE THIS TO YOUR EMAIL ADDRESS ******
 pager YOUR-TELEGRAM-ID-HERE
 service_notification_commands notify-service-by-telegram
 host_notification_commands notify-host-by-telegram
+
 }
 
 
